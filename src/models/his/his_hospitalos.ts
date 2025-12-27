@@ -105,15 +105,18 @@ export class HisHospitalOsModel {
     //select รายชื่อเพื่อแสดงทะเบียน refer
     getReferOut(db: Knex, date: any, hospCode = hisHospcode, visitNo: string = null) {
         date = moment(date).locale('TH').format('YYYY-MM-DD');
+        const columns = [
+            'refer_date', 'referid', 'hosp_destination',
+            'PID', 'hn', 'CID', 'vn', 'SEQ', '"AN"',
+            'prename', 'fname', 'lname', 'dob', 'sex',
+            'EMERGENCY', 'dr', 'provider',
+            'REQUEST', 'dx', 'cc', 'PH', 'PI', 'PHYSICALEXAM', 'diaglast',
+            'an', 'clinic'
+        ];
         let sql = db('his_connect.view_refer_out')
             .select(
                 db.raw('? as hospcode', [hisHospcode]),
-                'refer_date', 'referid', 'hosp_destination',
-                'PID', 'hn', 'CID', 'vn', 'SEQ', 'AN',
-                'prename', 'fname', 'lname', 'dob', 'sex',
-                'EMERGENCY', 'dr', 'provider',
-                'REQUEST', 'dx', 'cc', 'PH', 'PI', 'PHYSICALEXAM', 'diaglast',
-                'an', 'clinic'
+                db.raw(columns.join(', '))
             );
         
         if (visitNo) {
@@ -133,15 +136,19 @@ export class HisHospitalOsModel {
         columnName = columnName == 'cid' ? 'CID' : columnName;
         columnName = columnName == 'name' ? 'NAME' : columnName;
 
+        const columns = [
+            'HID', 'CID', 'PRENAME', 'NAME', 'LNAME', 'HN', 'PID', 'SEX', 'BIRTH',
+            'MSTATUS', 'OCCUPATION_OLD', 'OCCUPATION_NEW', 'RACE', 'NATION',
+            'RELIGION', 'EDUCATION', 'FATHER', 'MOTHER', 'COUPLE',
+            'VSTATUS', 'MOVEIN', 'DISCHARGE', 'DDISCHARGE', 'ABOGROUP',
+            'RHGROUP', 'LABOR', 'PASSPORT', 'TYPEAREA', 'MOBILE', 'dead',
+            'D_UPDATE'
+        ];
+
         const result = await db('his_connect.view_person')
             .select(
                 db.raw('? as HOSPCODE', [hisHospcode]),
-                'HID', 'CID', 'PRENAME', 'NAME', 'LNAME', 'HN', 'PID', 'SEX', 'BIRTH',
-                'MSTATUS', 'OCCUPATION_OLD', 'OCCUPATION_NEW', 'RACE', 'NATION',
-                'RELIGION', 'EDUCATION', 'FATHER', 'MOTHER', 'COUPLE', 
-                'VSTATUS', 'MOVEIN', 'DISCHARGE', 'DDISCHARGE', 'ABOGROUP',
-                'RHGROUP', 'LABOR', 'PASSPORT', 'TYPEAREA', 'MOBILE', 'dead',
-                'D_UPDATE'
+                db.raw(columns.join(', '))
             )
             .where(columnName, searchText)
             .first();
@@ -153,12 +160,15 @@ export class HisHospitalOsModel {
     async getAddress(db: Knex, columnName, searchText, hospCode = hisHospcode) {
         columnName = columnName === 'hn' ? 'patient_hn' : columnName;
         
+        const columns = [
+            'cid', 'hn', 'pid', 'addresstype', 'house_id', 'housetype',
+            'roomno', 'condo', 'houseno', 'soisub', 'soimain', 'road',
+            'villaname', 'village', 'tambon', 'ampur', 'changwat', 'd_update'
+        ];
         return db('his_connect.view_address')
             .select(
                 db.raw('? as hospcode', [hisHospcode]),
-                'cid', 'hn', 'pid', 'addresstype', 'house_id', 'housetype',
-                'roomno', 'condo', 'houseno', 'soisub', 'soimain', 'road',
-                'villaname', 'village', 'tambon', 'ampur', 'changwat', 'd_update'
+                db.raw(columns.join(', '))
             )
             .where(columnName, searchText);
     }
@@ -170,16 +180,19 @@ export class HisHospitalOsModel {
         columnName = columnName === 'hn' ? 'visit_hn' : columnName;
         columnName = columnName === 'date_serv' ? 'DATE_SERV' : columnName;
 
+        const columns = [
+            'PID', 'HN', 'CID', 'seq_id', 'SEQ', 'DATE_SERV', 'TIME_SERV',
+            'LOCATION', 'INTIME', 'INSTYPE', 'MAIN', 'TYPEIN', 'REFEROUTHOSP', 'CAUSEOUT',
+            'waist', 'cc', 'pe', 'ph', 'pi', 'nurse_note', 'SERVPLACE',
+            'BTEMP', 'SBP', 'DBP', 'PR', 'RR', 'o2sat', 'weight', 'height',
+            'gcs_e', 'gcs_v', 'gcs_m', 'pupil_left', 'pupil_right',
+            'TYPEOUT', 'dr', 'provider', 'CAUSEOUT',
+            'COST', 'PRICE', 'PAYPRICE', 'ACTUALPAY', 'D_UPDATE', 'hsub'
+        ];
         return db('his_connect.view_service')
             .select(
                 db.raw('? as HOSPCODE', [hisHospcode]),
-                'PID', 'HN', 'CID', 'seq_id', 'SEQ', 'DATE_SERV', 'TIME_SERV',
-                'LOCATION', 'INTIME', 'INSTYPE', 'MAIN', 'TYPEIN', 'REFEROUTHOSP', 'CAUSEOUT',
-                'waist', 'cc', 'pe', 'ph', 'pi', 'nurse_note', 'SERVPLACE',
-                'BTEMP', 'SBP', 'DBP', 'PR', 'RR', 'o2sat', 'weight', 'height',
-                'gcs_e', 'gcs_v', 'gcs_m', 'pupil_left', 'pupil_right',
-                'TYPEOUT', 'dr', 'provider', 'CAUSEOUT',
-                'COST', 'PRICE', 'PAYPRICE', 'ACTUALPAY', 'D_UPDATE', 'hsub'
+                db.raw(columns.join(', '))
             )
             .where(columnName, searchText);
     }
@@ -199,11 +212,14 @@ export class HisHospitalOsModel {
     // ✅ เรียกใช้: routes/his/index.ts, routes/refer/v3.ts, routes/refer/crontab.ts
     // ใช้ view_diagnosis_opd
     async getDiagnosisOpd(db: Knex, visitNo, hospCode = hisHospcode) {
+        const columns = [
+            'CID', 'PID', 'hn', 'seq_id', 'SEQ', 'VN',
+            'DATE_SERV', 'DIAGTYPE', 'DIAGCODE', 'CLINIC', 'PROVIDER', 'D_UPDATE'
+        ];
         return db('his_connect.view_diagnosis_opd')
             .select(
                 db.raw('? as HOSPCODE', [hisHospcode]),
-                'CID', 'PID', 'hn', 'seq_id', 'SEQ', 'VN',
-                'DATE_SERV', 'DIAGTYPE', 'DIAGCODE', 'CLINIC', 'PROVIDER', 'D_UPDATE'
+                db.raw(columns.join(', '))
             )
             .where('visit_vn', visitNo);
     }
@@ -211,12 +227,15 @@ export class HisHospitalOsModel {
     // ใช้ view_diagnosis_opd_accident
     async getDiagnosisOpdAccident(db: Knex, dateStart: any, dateEnd: any, hospCode = hisHospcode) {
         if (dateStart && dateEnd) {
+            const columns = [
+                'CID', 'PID', 'hn', 'seq_id', 'SEQ', 'VN',
+                'DATE_SERV', 'DIAGTYPE', 'DIAGCODE', 'DIAGNAME',
+                'CLINIC', 'PROVIDER', 'D_UPDATE'
+            ];
             return db('his_connect.view_diagnosis_opd_accident')
                 .select(
                     db.raw('? as HOSPCODE', [hisHospcode]),
-                    'CID', 'PID', 'hn', 'seq_id', 'SEQ', 'VN',
-                    'DATE_SERV', 'DIAGTYPE', 'DIAGCODE', 'DIAGNAME',
-                    'CLINIC', 'PROVIDER', 'D_UPDATE'
+                    db.raw(columns.join(', '))
                 )
                 .whereRaw('DATE_SERV::DATE BETWEEN ? AND ?', [dateStart, dateEnd])
                 .limit(maxLimit);
@@ -310,11 +329,14 @@ export class HisHospitalOsModel {
         columnName = columnName === 'hn' ? 'patient_hn' : columnName;
         columnName = columnName === 'cid' ? 'patient_pid' : columnName;
 
+        const columns = [
+            'visitno', 'hn', 'an', 'request_id', 'LOCALCODE', 'INVESTNAME',
+            'loinc', 'icdcm', 'cgd', 'cost', 'price', 'DATETIME_REPORT'
+        ];
         return db('his_connect.view_lab_request')
             .select(
                 db.raw('? as hospcode', [hisHospcode]),
-                'visitno', 'hn', 'an', 'request_id', 'LOCALCODE', 'INVESTNAME',
-                'loinc', 'icdcm', 'cgd', 'cost', 'price', 'DATETIME_REPORT'
+                db.raw(columns.join(', '))
             )
             .where(columnName, searchNo)
             .limit(maxLimit);
@@ -326,14 +348,17 @@ export class HisHospitalOsModel {
         columnName = columnName === 'visitNo' ? 'visit_vn' : columnName;
         columnName = columnName === 'hn' ? 'patient_hn' : columnName;
 
+        const columns = [
+            'VN', 'visitno', 'SEQ', 'PID', 'CID', 'request_id',
+            'LOCALCODE', 'tmlt', 'lab_group', 'INVESTNAME', 'INVESTVALUE',
+            'ICDCM', 'GROUPCODE', 'GROUPNAME', 'UNIT',
+            'DATETIME_INVEST', 'DATETIME_REPORT'
+        ];
         return db('his_connect.view_lab_result')
             .select(
                 db.raw('? as HOSPCODE', [hisHospcode]),
                 db.raw('? as INVESTTYPE', ['LAB']),
-                'VN', 'visitno', 'SEQ', 'PID', 'CID', 'request_id',
-                'LOCALCODE', 'tmlt', 'lab_group', 'INVESTNAME', 'INVESTVALUE',
-                'ICDCM', 'GROUPCODE', 'GROUPNAME', 'UNIT',
-                'DATETIME_INVEST', 'DATETIME_REPORT'
+                db.raw(columns.join(', '))
             )
             .where(columnName, searchNo)
             .limit(maxLimit);
@@ -342,12 +367,15 @@ export class HisHospitalOsModel {
     // ✅ เรียกใช้: routes/his/index.ts, routes/qdrugstore/index.ts, routes/refer/v3.ts
     // ใช้ view_drug_opd
     async getDrugOpd(db: Knex, visitNo, hospCode = hisHospcode) {
+        const columns = [
+            'PID', 'CID', 'seq_id', 'SEQ', 'vn', 'date_serv', 'clinic',
+            'DID', 'DID_TMT', 'dcode', 'dname', 'amount', 'unit', 'unit_packing',
+            'usage_code', 'drug_usage', 'caution', 'drugprice', 'drugcost', 'provider', 'd_update'
+        ];
         return db('his_connect.view_drug_opd')
             .select(
                 db.raw('? as HOSPCODE', [hisHospcode]),
-                'PID', 'CID', 'seq_id', 'SEQ', 'vn', 'date_serv', 'clinic',
-                'DID', 'DID_TMT', 'dcode', 'dname', 'amount', 'unit', 'unit_packing',
-                'usage_code', 'drug_usage', 'caution', 'drugprice', 'drugcost', 'provider', 'd_update'
+                db.raw(columns.join(', '))
             )
             .where('visit_vn', visitNo);
     }
@@ -361,17 +389,20 @@ export class HisHospitalOsModel {
         columnName = columnName === 'dateadmit' ? 'dateadmit_date_formatted' : columnName;
         columnName = columnName === 'datedisc' ? 'discharge_date_formatted' : columnName;
 
+        const columns = [
+            'PID', 'seq_id', 'SEQ', 'AN', 'cid', 'SEX',
+            'datetime_admit', 'WARD_LOCAL', 'wardadmit', 'WARDADMITNAME',
+            'instype', 'typein', 'referinhosp', 'causein', 'admitweight', 'admitheight',
+            'datetime_disch', 'warddisch', 'WARDDISCHNAME',
+            'dischstatus', 'dischtype', 'referouthosp', 'causeout',
+            'cost', 'price', 'payprice', 'actualpay',
+            'dr', 'provider', 'd_update',
+            'drg', 'rw', 'adjrw', 'wtlos', 'error', 'warning', 'actlos', 'grouper_version'
+        ];
         let sqlCommand = db('his_connect.view_admission')
             .select(
                 db.raw('? as HOSPCODE', [hisHospcode]),
-                'PID', 'seq_id', 'SEQ', 'AN', 'cid', 'SEX',
-                'datetime_admit', 'WARD_LOCAL', 'wardadmit', 'WARDADMITNAME',
-                'instype', 'typein', 'referinhosp', 'causein', 'admitweight', 'admitheight',
-                'datetime_disch', 'warddisch', 'WARDDISCHNAME',
-                'dischstatus', 'dischtype', 'referouthosp', 'causeout',
-                'cost', 'price', 'payprice', 'actualpay',
-                'dr', 'provider', 'd_update',
-                'drg', 'rw', 'adjrw', 'wtlos', 'error', 'warning', 'actlos', 'grouper_version'
+                db.raw(columns.join(', '))
             );
 
         if (Array.isArray(searchValue)) {
@@ -386,10 +417,13 @@ export class HisHospitalOsModel {
     // ✅ เรียกใช้: routes/his/index.ts, routes/refer/v3.ts, routes/refer/crontab.ts
     // ใช้ view_procedure_ipd
     async getProcedureIpd(db: Knex, an: string, hospCode = hisHospcode) {
+        const columns = [
+            'pid', 'an', 'datetime_admit', 'wardstay', 'procedcode', 'timestart', 'timefinish', 'serviceprice', 'provider', 'd_update'
+        ];
         return db('his_connect.view_procedure_ipd')
             .select(
                 db.raw('? as HOSPCODE', [hisHospcode]),
-                'pid', 'an', 'datetime_admit', 'wardstay', 'procedcode', 'timestart', 'timefinish', 'serviceprice', 'provider', 'd_update'
+                db.raw(columns.join(', '))
             )
             .where('visit_vn', an)
             .where('f_visit_diagnosis_type_id', '1');
@@ -398,11 +432,14 @@ export class HisHospitalOsModel {
     // ✅ เรียกใช้: routes/his/index.ts, routes/qdrugstore/index.ts, routes/refer/v3.ts
     // ใช้ view_charge_ipd
     async getChargeIpd(db: Knex, an: string, hospCode = hisHospcode) {
+        const columns = [
+            'PID', 'AN', 'datetime_admit', 'wardstay', 'chargeitem', 'chargelist',
+            'quantity', 'instype', 'cost', 'price', 'payprice', 'd_update'
+        ];
         return db('his_connect.view_charge_ipd')
             .select(
                 db.raw('? as HOSPCODE', [hisHospcode]),
-                'PID', 'AN', 'datetime_admit', 'wardstay', 'chargeitem', 'chargelist',
-                'quantity', 'instype', 'cost', 'price', 'payprice', 'd_update'
+                db.raw(columns.join(', '))
             )
             .where('visit_vn', an);
     }
@@ -410,12 +447,15 @@ export class HisHospitalOsModel {
     // ✅ เรียกใช้: routes/his/index.ts, routes/refer/v3.ts, routes/refer/crontab.ts
     // ใช้ view_drug_ipd
     async getDrugIpd(db: Knex, an: string, hospCode = hisHospcode) {
+        const columns = [
+            'PID', 'AN', 'DATETIME_ADMIT', 'WARDSTAY', 'TYPEDRUG', 'DIDSTD', 'DNAME',
+            'DATESTART', 'DATEFINISH', 'AMOUNT', 'UNIT', 'UNIT_PACKING',
+            'DRUGPRICE', 'DRUGCOST', 'PROVIDER', 'D_UPDATE', 'CID'
+        ];
         return db('his_connect.view_drug_ipd')
             .select(
                 db.raw('? as HOSPCODE', [hisHospcode]),
-                'PID', 'AN', 'DATETIME_ADMIT', 'WARDSTAY', 'TYPEDRUG', 'DIDSTD', 'DNAME',
-                'DATESTART', 'DATEFINISH', 'AMOUNT', 'UNIT', 'UNIT_PACKING',
-                'DRUGPRICE', 'DRUGCOST', 'PROVIDER', 'D_UPDATE', 'CID'
+                db.raw(columns.join(', '))
             )
             .where('visit_vn', an);
     }
@@ -426,11 +466,14 @@ export class HisHospitalOsModel {
         columnName = columnName === 'visitNo' ? 'visit_vn' : columnName;
         columnName = columnName === 'an' ? 'visit_vn' : columnName;
 
+        const columns = [
+            'pid', 'an', 'datetime_admit', 'warddiag', 'diagtype',
+            'diagcode', 'diagname', 'provider', 'd_update', 'CID'
+        ];
         return db('his_connect.view_diagnosis_ipd')
             .select(
                 db.raw('? as hospcode', [hisHospcode]),
-                'pid', 'an', 'datetime_admit', 'warddiag', 'diagtype',
-                'diagcode', 'diagname', 'provider', 'd_update', 'CID'
+                db.raw(columns.join(', '))
             )
             .where(columnName, searchNo)
             .orderBy(['an', 'diagtype']);
@@ -439,11 +482,14 @@ export class HisHospitalOsModel {
     // ใช้ view_diagnosis_ipd_accident
     async getDiagnosisIpdAccident(db: Knex, dateStart: any, dateEnd: any, hospCode = hisHospcode) {
         if (dateStart && dateEnd) {
+            const columns = [
+                'pid', 'an', 'datetime_admit', 'warddiag', 'diagtype',
+                'diagcode', 'diagname', 'provider', 'd_update', 'CID'
+            ];
             return db('his_connect.view_diagnosis_ipd_accident')
                 .select(
                     db.raw('? as hospcode', [hisHospcode]),
-                    'pid', 'an', 'datetime_admit', 'warddiag', 'diagtype',
-                    'diagcode', 'diagname', 'provider', 'd_update', 'CID'
+                    db.raw(columns.join(', '))
                 )
                 .whereRaw('diagnosis_date::DATE BETWEEN ? AND ?', [dateStart, dateEnd])
                 .limit(maxLimit);
@@ -455,13 +501,16 @@ export class HisHospitalOsModel {
     // ✅ เรียกใช้: routes/his/index.ts, routes/qdrugstore/index.ts, routes/refer/v3.ts
     // ใช้ view_accident
     async getAccident(db: Knex, visitNo, hospCode = hisHospcode) {
+        const columns = [
+            'hn', 'PID', 'CID', 'seq_id', 'SEQ', 'datetime_serv', 'datetime_ae',
+            'aetype', 'aeplace', 'typein_ae', 'traffic', 'vehicle', 'alcohol', 'nacrotic_drug',
+            'belt', 'helmet', 'airway', 'stopbleed', 'splint', 'fluid', 'urgency',
+            'coma_eye', 'coma_speak', 'coma_movement', 'd_update'
+        ];
         return db('his_connect.view_accident')
             .select(
                 db.raw('? as HOSPCODE', [hisHospcode]),
-                'hn', 'PID', 'CID', 'seq_id', 'SEQ', 'datetime_serv', 'datetime_ae',
-                'aetype', 'aeplace', 'typein_ae', 'traffic', 'vehicle', 'alcohol', 'nacrotic_drug',
-                'belt', 'helmet', 'airway', 'stopbleed', 'splint', 'fluid', 'urgency',
-                'coma_eye', 'coma_speak', 'coma_movement', 'd_update'
+                db.raw(columns.join(', '))
             )
             .where('visit_vn', visitNo);
     }
@@ -469,13 +518,15 @@ export class HisHospitalOsModel {
     // ✅ เรียกใช้: routes/his/index.ts, routes/refer/v3.ts, routes/refer/crontab.ts, routes/pcc/index.ts
     // ใช้ view_drug_allergy
     async getDrugAllergy(db: Knex, hn, hospCode = hisHospcode) {
+        const columns = [
+            'PID', 'CID', 'DRUGALLERGY', 'DNAME', 'ALEVE', 'DETAIL', 'INFORMANT',
+            'DATERECORD', 'TYPEDX', 'SYMPTOM', 'D_UPDATE'
+        ];
         return db('his_connect.view_drug_allergy')
             .select(
                 db.raw('? as HOSPCODE', [hisHospcode]),
-                'PID', 'CID', 'DRUGALLERGY', 'DNAME', 'ALEVE', 'DETAIL', 'INFORMANT',
-                'DATERECORD',
-                db.raw('? as INFORMHOSP', [hisHospcode]),
-                'TYPEDX', 'SYMPTOM', 'D_UPDATE'
+                db.raw(columns.join(', ')),
+                db.raw('? as INFORMHOSP', [hisHospcode])
             )
             .where('patient_hn', hn);
     }
@@ -499,13 +550,16 @@ export class HisHospitalOsModel {
         columnName = columnName === 'vn' ? 'visit_vn' : columnName;
         columnName = columnName === 'referNo' ? 'refer_no' : columnName;
 
+        const columns = [
+            'REFERID', 'REFERID_PROVINCE', 'PID', 'CID', 'seq_id', 'SEQ', 'AN',
+            'REFERID_ORIGIN', 'HOSPCODE_ORIGIN', 'DATETIME_SERV', 'DATETIME_ADMIT', 'DATETIME_REFER',
+            'CLINIC_REFER', 'HOSP_DESTINATION', 'CHIEFCOMP', 'PHYSICALEXAM', 'DIAGFIRST', 'DIAGLAST',
+            'PSTATUS', 'dr', 'provider', 'PTYPE', 'EMERGENCY', 'PTYPEDIS', 'CAUSEOUT', 'REQUEST', 'D_UPDATE'
+        ];
         return db('his_connect.view_refer_history')
             .select(
                 db.raw('? as HOSPCODE', [hisHospcode]),
-                'REFERID', 'REFERID_PROVINCE', 'PID', 'CID', 'seq_id', 'SEQ', 'AN',
-                'REFERID_ORIGIN', 'HOSPCODE_ORIGIN', 'DATETIME_SERV', 'DATETIME_ADMIT', 'DATETIME_REFER',
-                'CLINIC_REFER', 'HOSP_DESTINATION', 'CHIEFCOMP', 'PHYSICALEXAM', 'DIAGFIRST', 'DIAGLAST',
-                'PSTATUS', 'dr', 'provider', 'PTYPE', 'EMERGENCY', 'PTYPEDIS', 'CAUSEOUT', 'REQUEST', 'D_UPDATE'
+                db.raw(columns.join(', '))
             )
             .where(columnName, searchNo);
     }
@@ -549,10 +603,13 @@ export class HisHospitalOsModel {
     // ใช้ view_refer_result
     getReferResult(db: Knex, visitDate: string, hospCode = hisHospcode) {
         visitDate = moment(visitDate).format('YYYY-MM-DD');
+        const columns = [
+            'HOSP_SOURCE', 'CID_IN', 'PID_IN', 'SEQ_IN', 'REFERID', 'DATETIME_REFER', 'detail', 'reply_diagnostic', 'reply_recommend', 'REFERID_SOURCE', 'reply_date', 'AN_IN', 'REFERID_PROVINCE', 'DATETIME_IN', 'REFER_RESULT', 'D_UPDATE'
+        ];
         return db('his_connect.view_refer_result')
             .select(
                 db.raw('? as HOSPCODE', [hisHospcode]),
-                'HOSP_SOURCE', 'CID_IN', 'PID_IN', 'SEQ_IN', 'REFERID', 'DATETIME_REFER', 'detail', 'reply_diagnostic', 'reply_recommend', 'REFERID_SOURCE', 'reply_date', 'AN_IN', 'REFERID_PROVINCE', 'DATETIME_IN', 'REFER_RESULT', 'D_UPDATE'
+                db.raw(columns.join(', '))
             )
             .where('visit_date', visitDate)
             .limit(maxLimit);
