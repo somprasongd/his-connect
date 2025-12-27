@@ -39,15 +39,18 @@ export class HisHospitalOsModel {
     getPerson(knex: Knex, columnName, searchText) {
         columnName = columnName == 'hn' ? 'HN' : columnName;
         columnName = columnName == 'cid' ? 'CID' : columnName;
+        const columns = [
+            'HID', 'CID', 'PRENAME', 'NAME', 'LNAME', 'HN', 'PID', 'SEX', 'BIRTH',
+            'MSTATUS', 'FSTATUS', 'OCCUPATION_OLD', 'OCCUPATION_NEW',
+            'RACE', 'NATION', 'RELIGION', 'EDUCATION',
+            'FATHER', 'MOTHER', 'COUPLE', 'VSTATUS', 'MOVEIN',
+            'DISCHARGE', 'DDISCHARGE', 'ABOGROUP', 'RHGROUP',
+            'LABOR', 'PASSPORT', 'TYPEAREA', 'MOBILE', 'dead', 'D_UPDATE'
+        ];
         return knex('his_connect.view_person')
             .select(
                 knex.raw(`? as HOSPCODE`, [process.env.HOSPCODE || '']),
-                'HID', 'CID', 'PRENAME', 'NAME', 'LNAME', 'HN', 'PID', 'SEX', 'BIRTH',
-                'MSTATUS', 'FSTATUS', 'OCCUPATION_OLD', 'OCCUPATION_NEW',
-                'RACE', 'NATION', 'RELIGION', 'EDUCATION',
-                'FATHER', 'MOTHER', 'COUPLE', 'VSTATUS', 'MOVEIN',
-                'DISCHARGE', 'DDISCHARGE', 'ABOGROUP', 'RHGROUP',
-                'LABOR', 'PASSPORT', 'TYPEAREA', 'MOBILE', 'dead', 'D_UPDATE'
+                knex.raw(columns.join(', '))
             )
             .where(columnName, "=", searchText)
             .orderBy('addcode');
@@ -58,15 +61,16 @@ export class HisHospitalOsModel {
     getOpdService(knex: Knex, hn, date, columnName = '', searchText = '') {
         columnName = columnName == 'visitNo' || columnName == 'vn' ? 'visit_vn' : columnName;
         
+        const columns = [
+            'hn', 'visitno', 'time', 'adate', 'bp_systolic', 'bp_diastolic', 'pr', 'rr',
+            'hdate', 'htime', 'mooban', 'apointname', 'atumbon', 'aampur', 'aplace',
+            'cause_t', 'eye', 'verbal', 'motor',
+            'cause', 'apoint', 'injt', 'pmi', 'atohosp', 'airway',
+            'risk1', 'risk2', 'risk3', 'risk4', 'blood', 'splintc', 'splint', 'iv',
+            'disc_date_er', 'staer', 'staward'
+        ];
         let query = knex('his_connect.view_opd_service')
-            .select(
-                'hn', 'visitno', 'time', 'adate', 'bp_systolic', 'bp_diastolic', 'pr', 'rr',
-                'hdate', 'htime', 'mooban', 'apointname', 'atumbon', 'aampur', 'aplace',
-                'cause_t', 'eye', 'verbal', 'motor',
-                'cause', 'apoint', 'injt', 'pmi', 'atohosp', 'airway',
-                'risk1', 'risk2', 'risk3', 'risk4', 'blood', 'splintc', 'splint', 'iv',
-                'disc_date_er', 'staer', 'staward'
-            )
+            .select(knex.raw(columns.join(', ')))
             .where('service_date', date);
         
         if (hn) query.where('hn', hn);
@@ -79,17 +83,18 @@ export class HisHospitalOsModel {
     // Columns based on his_hosxpv4.model.ts getOpdServiceByVN
     // ใช้ view_opd_service - filter ด้วย visit_vn
     getOpdServiceByVN(db: Knex, vn: any) {
+        const columns = [
+            'hn', 'visitno', 'date', 'time',
+            'clinic_local_code', 'clinic_local_name',
+            'bp_systolic', 'bp_diastolic', 'pr', 'rr', 'hdate', 'htime',
+            'gcs_e', 'gcs_v', 'gcs_m', 'eye', 'verbal', 'motor',
+            'cause', 'apoint', 'injt', 'injp', 'airway',
+            'risk1', 'risk2', 'risk3', 'risk4', 'blood', 'splintc', 'iv',
+            'br1', 'br2', 'tinj', 'ais1', 'ais2',
+            'disc_date_er', 'cause_t', 'wardcode', 'htohosp', 'diag1', 'diag2'
+        ];
         let sql = db('his_connect.view_opd_service')
-            .select(
-                'hn', 'visitno', 'date', 'time',
-                'clinic_local_code', 'clinic_local_name',
-                'bp_systolic', 'bp_diastolic', 'pr', 'rr', 'hdate', 'htime',
-                'gcs_e', 'gcs_v', 'gcs_m', 'eye', 'verbal', 'motor',
-                'cause', 'apoint', 'injt', 'injp', 'airway',
-                'risk1', 'risk2', 'risk3', 'risk4', 'blood', 'splintc', 'iv',
-                'br1', 'br2', 'tinj', 'ais1', 'ais2',
-                'disc_date_er', 'cause_t', 'wardcode', 'htohosp', 'diag1', 'diag2'
-            );
+            .select(db.raw(columns.join(', ')));
         if (typeof vn === 'string') {
             sql.where('visit_vn', vn);
         } else {
@@ -119,11 +124,14 @@ export class HisHospitalOsModel {
     // ✅ เรียกใช้: routes/isonline/his.ts (L262)
     // Columns based on column_description.md getDiagnosisOpd
     getDiagnosisOpd(knex: Knex, visitno) {
+        const columns = [
+            'CID', 'PID', 'seq_id', 'SEQ', 'VN', 'DATE_SERV',
+            'DIAGTYPE', 'DIAGCODE', 'CLINIC', 'PROVIDER', 'D_UPDATE'
+        ];
         return knex('his_connect.view_diagnosis_opd')
             .select(
                 knex.raw(`? as HOSPCODE`, [process.env.HOSPCODE || '']),
-                'CID', 'PID', 'seq_id', 'SEQ', 'VN', 'DATE_SERV',
-                'DIAGTYPE', 'DIAGCODE', 'CLINIC', 'PROVIDER', 'D_UPDATE'
+                knex.raw(columns.join(', '))
             )
             .where('visit_vn', "=", visitno);
     }
