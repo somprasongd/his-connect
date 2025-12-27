@@ -20,46 +20,43 @@
 
 ### ตารางสรุป Views
 
-| View Name                                 | Function(s)                                    | File                                       |
-| ----------------------------------------- | ---------------------------------------------- | ------------------------------------------ |
-| `his_connect.view_ward`                   | getWard()                                      | his_hospitalos.ts                          |
-| `his_connect.view_bed`                    | getBedNo(), countBedNo()                       | his_hospitalos.ts                          |
-| `his_connect.view_ipd_concurrent`         | concurrentIPDByWard(), concurrentIPDByClinic() | his_hospitalos.ts                          |
-| `his_connect.view_opd_visit_summary`      | sumOpdVisitByClinic()                          | his_hospitalos.ts                          |
-| `his_connect.view_visit_opd`              | getVisitForMophAlert()                         | his_hospitalos.ts                          |
-| `his_connect.view_department`             | getDepartment()                                | his_hospitalos.ts                          |
-| `his_connect.view_dr`                     | getDr()                                        | his_hospitalos.ts                          |
-| `his_connect.view_refer_out`              | getReferOut()                                  | his_hospitalos.ts                          |
-| `his_connect.view_person`                 | getPerson()                                    | his_hospitalos.ts, his_hospitalos.model.ts |
-| `his_connect.view_address`                | getAddress()                                   | his_hospitalos.ts                          |
-| `his_connect.view_service`                | getService()                                   | his_hospitalos.ts                          |
-| `his_connect.view_diagnosis_opd`          | getDiagnosisOpd()                              | his_hospitalos.ts, his_hospitalos.model.ts |
-| `his_connect.view_diagnosis_opd_accident` | getDiagnosisOpdAccident()                      | his_hospitalos.ts                          |
-| `his_connect.view_diagnosis_opd_vwxy`     | getDiagnosisOpdVWXY()                          | his_hospitalos.ts, his_hospitalos.model.ts |
-| `his_connect.view_diagnosis_sepsis_opd`   | getDiagnosisSepsisOpd()                        | his_hospitalos.ts                          |
-| `his_connect.view_diagnosis_sepsis_ipd`   | getDiagnosisSepsisIpd()                        | his_hospitalos.ts                          |
-| `his_connect.view_lab_request`            | getLabRequest()                                | his_hospitalos.ts                          |
-| `his_connect.view_lab_result`             | getLabResult(), getInvestigation()             | his_hospitalos.ts                          |
-| `his_connect.view_drug_opd`               | getDrugOpd()                                   | his_hospitalos.ts                          |
-| `his_connect.view_admission`              | getAdmission()                                 | his_hospitalos.ts                          |
-| `his_connect.view_diagnosis_ipd`          | getDiagnosisIpd()                              | his_hospitalos.ts                          |
-| `his_connect.view_diagnosis_ipd_accident` | getDiagnosisIpdAccident()                      | his_hospitalos.ts                          |
-| `his_connect.view_procedure_ipd`          | getProcedureIpd()                              | his_hospitalos.ts                          |
-| `his_connect.view_charge_ipd`             | getChargeIpd()                                 | his_hospitalos.ts                          |
-| `his_connect.view_drug_ipd`               | getDrugIpd()                                   | his_hospitalos.ts                          |
-| `his_connect.view_accident`               | getAccident()                                  | his_hospitalos.ts                          |
-| `his_connect.view_drug_allergy`           | getDrugAllergy()                               | his_hospitalos.ts                          |
-| `his_connect.view_appointment`            | getAppointment()                               | his_hospitalos.ts                          |
-| `his_connect.view_refer_history`          | getReferHistory()                              | his_hospitalos.ts                          |
-| `his_connect.view_clinical_refer`         | getClinicalRefer()                             | his_hospitalos.ts                          |
-| `his_connect.view_investigation_refer`    | getInvestigationRefer()                        | his_hospitalos.ts                          |
-| `his_connect.view_care_refer`             | getCareRefer()                                 | his_hospitalos.ts                          |
-| `his_connect.view_refer_result`           | getReferResult()                               | his_hospitalos.ts                          |
-| `his_connect.view_provider`               | getProvider(), getProviderDr()                 | his_hospitalos.ts                          |
-| `his_connect.view_refer_out_summary`      | sumReferOut()                                  | his_hospitalos.ts                          |
-| `his_connect.view_refer_in_summary`       | sumReferIn()                                   | his_hospitalos.ts                          |
-| `his_connect.view_opd_service`            | getOpdService()                                | his_hospitalos.model.ts                    |
-| `his_connect.view_opd_service_by_vn`      | getOpdServiceByVN()                            | his_hospitalos.ts, his_hospitalos.model.ts |
+| View Name                                 | Function(s)                                                                   | File                                       |
+| ----------------------------------------- | ----------------------------------------------------------------------------- | ------------------------------------------ |
+| `his_connect.view_ward`                   | getWard()                                                                     | his_hospitalos.ts                          |
+| `his_connect.view_bed`                    | getBedNo(), countBedNo()                                                      | his_hospitalos.ts                          |
+| `his_connect.view_ipd_concurrent`         | concurrentIPDByWard(), concurrentIPDByClinic()                                | his_hospitalos.ts                          |
+| `his_connect.view_opd_visit_summary`      | sumOpdVisitByClinic()                                                         | his_hospitalos.ts                          |
+| `his_connect.view_visit_opd`              | getVisitForMophAlert()                                                        | his_hospitalos.ts                          |
+| `his_connect.view_department`             | getDepartment()                                                               | his_hospitalos.ts                          |
+| `his_connect.view_dr`                     | getDr()                                                                       | his_hospitalos.ts                          |
+| `his_connect.view_refer_out`              | getReferOut()                                                                 | his_hospitalos.ts                          |
+| `his_connect.view_person`                 | getPerson()                                                                   | his_hospitalos.ts, his_hospitalos.model.ts |
+| `his_connect.view_address`                | getAddress()                                                                  | his_hospitalos.ts                          |
+| `his_connect.view_service`                | getService()                                                                  | his_hospitalos.ts                          |
+| `his_connect.view_diagnosis_opd`          | getDiagnosisOpd()                                                             | his_hospitalos.ts, his_hospitalos.model.ts |
+| `his_connect.view_diagnosis_opd_accident` | getDiagnosisOpdAccident()                                                     | his_hospitalos.ts                          |
+| `his_connect.view_diagnosis_opd_vwxy`     | getDiagnosisOpdVWXY()                                                         | his_hospitalos.ts, his_hospitalos.model.ts |
+| `his_connect.view_diagnosis_sepsis`       | getDiagnosisSepsisOpd(), getDiagnosisSepsisIpd() _(ใช้ is_opd/is_ipd filter)_ | his_hospitalos.ts                          |
+| `his_connect.view_lab_request`            | getLabRequest()                                                               | his_hospitalos.ts                          |
+| `his_connect.view_lab_result`             | getLabResult(), getInvestigation()                                            | his_hospitalos.ts                          |
+| `his_connect.view_drug_opd`               | getDrugOpd()                                                                  | his_hospitalos.ts                          |
+| `his_connect.view_admission`              | getAdmission()                                                                | his_hospitalos.ts                          |
+| `his_connect.view_diagnosis_ipd`          | getDiagnosisIpd()                                                             | his_hospitalos.ts                          |
+| `his_connect.view_diagnosis_ipd_accident` | getDiagnosisIpdAccident()                                                     | his_hospitalos.ts                          |
+| `his_connect.view_procedure_ipd`          | getProcedureIpd()                                                             | his_hospitalos.ts                          |
+| `his_connect.view_charge_ipd`             | getChargeIpd()                                                                | his_hospitalos.ts                          |
+| `his_connect.view_drug_ipd`               | getDrugIpd()                                                                  | his_hospitalos.ts                          |
+| `his_connect.view_accident`               | getAccident()                                                                 | his_hospitalos.ts                          |
+| `his_connect.view_drug_allergy`           | getDrugAllergy()                                                              | his_hospitalos.ts                          |
+| `his_connect.view_appointment`            | getAppointment()                                                              | his_hospitalos.ts                          |
+| `his_connect.view_refer_history`          | getReferHistory()                                                             | his_hospitalos.ts                          |
+| `his_connect.view_clinical_refer`         | getClinicalRefer()                                                            | his_hospitalos.ts                          |
+| `his_connect.view_investigation_refer`    | getInvestigationRefer()                                                       | his_hospitalos.ts                          |
+| `his_connect.view_care_refer`             | getCareRefer()                                                                | his_hospitalos.ts                          |
+| `his_connect.view_refer_result`           | getReferResult()                                                              | his_hospitalos.ts                          |
+| `his_connect.view_provider`               | getProvider(), getProviderDr()                                                | his_hospitalos.ts                          |
+| `his_connect.view_refer_summary`          | sumReferOut(), sumReferIn() _(ใช้ is_refer_out/is_refer_in filter)_           | his_hospitalos.ts                          |
+| `his_connect.view_opd_service`            | getOpdService(), getOpdServiceByVN()                                          | his_hospitalos.model.ts                    |
 
 # 2.push to git กรณีเป็นทีมพัฒนา (Develop@MOPH)
 
