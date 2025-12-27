@@ -518,7 +518,7 @@ export class HisHospitalOsModel {
                 db.raw('? as hospcode', [hisHospcode]),
                 'refer_no', 'bp', 'pr', 'rr', 'temp'
             )
-            .where('visit_refer_out_number', referNo)
+            .where('refer_no', referNo)
             .limit(maxLimit);
     }
 
@@ -530,7 +530,7 @@ export class HisHospitalOsModel {
                 db.raw('? as hospcode', [hisHospcode]),
                 'refer_no', 'investname', 'investvalue', 'unit'
             )
-            .where('visit_refer_out_number', referNo)
+            .where('refer_no', referNo)
             .limit(maxLimit);
     }
 
